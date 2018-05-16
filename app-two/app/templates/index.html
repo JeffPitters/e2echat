@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask-E2E-Chat: {{ room }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Flask-E2E-Chat: {{ room }}</h1>
+
+<form action="{{ url_for('send') }}" method="post">
+    <textarea class="textarea" name="text" cols="80" rows="20">{{ text }}</textarea>
+    <input type="submit">
+</form>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</body>
+</html>

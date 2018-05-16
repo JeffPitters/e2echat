@@ -1,0 +1,55 @@
+version: "3"
+services:
+  server-one:
+    restart: always
+    image: nginx
+    volumes:
+      - ./server-one/conf.d:/etc/nginx/conf.d
+      - ./app-one/app/static:/app-one/static
+    ports:
+      - "5000:80"
+    container_name: server-one
+    networks:
+      - server_nw
+  
+  web-one:
+    restart: always
+    build: ./app-one
+    working_dir: /app-one
+    volumes:
+      - ./app-one:/app-one
+    expose:
+      - "8000"
+    networks:
+      - server_nw
+    container_name: web-one
+    command: gunicorn chat:app --backlog 10 -b :8000 --name web-one
+
+  server-two:
+    restart: always
+    image: nginx
+    volumes:
+      - ./server-two/conf.d:/etc/nginx/conf.d
+      - ./app-two/app/static:/app-two/static
+    ports:
+      - "5001:80"
+    container_name: server-two
+    networks:
+      - server_nw
+
+  web-two:
+    restart: always
+    build: ./app-two
+    working_dir: /app-two
+    volumes:
+      - ./app-two:/app-two
+    expose:
+      - "8000"
+    container_name: web-two
+    networks:
+      - server_nw
+    command: gunicorn chat:app --backlog 10 -b :8000 --name web-two
+
+networks:
+  server_nw:
+    driver: bridge

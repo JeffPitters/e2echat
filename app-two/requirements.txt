@@ -1,0 +1,11 @@
+pyprimes==0.2.2a0
+pycrypto
+requests
+gunicorn
+Flask
+WTForms
+Flask-WTF
+jwcrypto
+SQLAlchemy
+Flask-SQLAlchemy
+Flask-WhooshAlchemy
